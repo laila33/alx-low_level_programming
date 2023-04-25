@@ -1,4 +1,4 @@
-#include "main.h"
+#include "holberton.h"
 
 /**
  * _islower - Checks if a character is lowercase.
@@ -12,3 +12,4 @@ int _islower(int c)
 		return (1);
 	else
 		return (0);
+}
