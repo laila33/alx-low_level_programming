@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 
 /**
@@ -26,5 +25,6 @@ continue;
 printf(" ");
 }
 printf('\n');
+return (0);
 }
 
