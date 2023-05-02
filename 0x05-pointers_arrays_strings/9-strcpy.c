@@ -10,13 +10,10 @@
  */
 char *_strcpy(char *dest, const char *src)
 {
-	int index = 0;
+	int i;
 
-	while (src[index])
-	{
-		dest[index] = src[index];
-		index++;
-	}
-
-	return (dest);
+	do {
+	dest[i] = src[i];
+	} while (src != '\0')
+return (dest);
 }
