@@ -20,13 +20,13 @@ int main(void)
 	for (i = 0; i < 100; i++)
 	{
 		pass[i] = rand() % 78;
-		su += (pass[i] + '0');
+		s += (pass[i] + '0');
 		putchar(pass[i] + '0');
 		if ((2772 - s) - '0' < 78)
 		{
 			m = 2772 - s - '0';
 			s += m;
-			putchar(n + '0');
+			putchar(m + '0');
 			break;
 		}
 	}
