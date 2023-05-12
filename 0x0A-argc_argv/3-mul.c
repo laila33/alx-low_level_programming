@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 	if (s == 3)
 	{
 		s = atoi(argv[1] * argv[2]);
+		printf("%d\n", s);
 	}
 	else
 	{
