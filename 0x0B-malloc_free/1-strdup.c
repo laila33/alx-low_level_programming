@@ -13,7 +13,7 @@ char *_strdup(char *str)
 
 	if (str == 0)
 		return (NULL);
-	for (; str[size] != '\0', size++)
+	for (; str[size] != '\0'; size++)
 	;
 	x = malloc(size * sizeof(*str) + 1);
 	if (x == 0)
