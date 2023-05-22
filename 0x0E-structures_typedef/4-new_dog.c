@@ -13,7 +13,7 @@ int _strlen(char *ss)
 
 	k = 0;
 
-	while (s[k] != '\0')
+	while (ss[k] != '\0')
 	{
 		k++;
 	}
