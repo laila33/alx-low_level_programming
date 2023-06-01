@@ -10,7 +10,7 @@
  * Return: the address of the new element, or NULL
  */
 list_t *add_node(list_t **head, const char *str)
-	{
+{
 	list_t *newnode = malloc(sizeof(list_t));
 
 	unsigned int s = 0;
