@@ -1,5 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
+
 #include "lists.h"
 
 /**
@@ -19,7 +18,7 @@ size_t print_list(const list_t *h)
 	{
 		if (h->str == NULL)
 		{
-			printf("[%d] %s\n", [0], "(nil)");
+			printf([0], "(nil)");
 		}
 		else
 		{
