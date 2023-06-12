@@ -1,5 +1,7 @@
-
+#include "main.h"
 #include <stdio.h>
+#include <stdlib.h>
+
 
 /**
  * make_buffer - define 1024 bytes for  buffer.
