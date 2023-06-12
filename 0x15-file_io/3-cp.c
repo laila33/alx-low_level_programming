@@ -103,7 +103,7 @@ int main(int argc, const char *argv[])
 		closefile(fin);
 		exit(99);
 	}
-	while ((bytestoread = readfile(argv[1], fin, buffer, buffer)))
+	while ((bytestoread = readfile(argv[1], fin, buf, buffer)))
 	{
 		if (bytestoread < 0)
 		{
@@ -111,7 +111,7 @@ int main(int argc, const char *argv[])
 			closefile(fout);
 			exit(98);
 		}
-		if (writefile(argv[2], fout, buffer, bytestoread) < 0)
+		if (writefile(argv[2], fout, buff, bytestoread) < 0)
 		{
 			closefile(fin);
 			closefile(fout);
