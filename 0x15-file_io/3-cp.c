@@ -103,7 +103,7 @@ int main(int argc, const char *argv[])
 		closefile(fin);
 		exit(99);
 	}
-	while ((bytestoread = readfile(argv[1], fin, buffer, BUFSIZE)))
+	while ((bytestoread = readfile(argv[1], fin, buffer, buffer)))
 	{
 		if (bytestoread < 0)
 		{
