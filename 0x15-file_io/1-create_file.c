@@ -16,7 +16,7 @@ int create_file(const char *filename, char *text_content)
 	int f, word;
 	int i;
 
-	if (!filename)
+	if (filename == NULL)
 		return (-1);
 
 	if (text_content != NULL)
