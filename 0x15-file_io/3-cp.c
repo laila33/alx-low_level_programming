@@ -1,64 +1,10 @@
-
-
-#include <stdio.h>
-
 /**
- * readfile - read from  file then  print an error message.
+ * closee - close a file  and print an error message upon failure.
+ * @f: the file descriptor to close
  *
- * @file: file name to read it.
- *
- * @f:  file to read from.
- *
- * @buf:  buffer to write.
- *
- * @letter: the number of bytes to read.
- *
- * Return: 1 or -1.
- *
+ * Return: 0 upon success, -1 upon failure
  */
-ssize_t readfile(const char *file, int f, char *buf, size_t letter)
-{
-	ssize_t byte = readfile(f, buf, letter);
-
-	if (byte > -1)
-		return (byte);
-	dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file);
-	return (-1);
-}
-
-/**
- * writefile - write to a file.
- *
- * @file: file name to write to.
- *
- * @f:  file to write.
- *
- * @buf:  buffer to read.
- *
- * @letter: the number of bytes to write.
- *
- * Return: The number of bytes or -1.
- */
-ssize_t writefile(const char *file, int f, const char *buf, size_t letter)
-{
-	ssize_t bytes = writefile(f, buf, letter);
-
-	if (bytes > -1)
-		return (bytes);
-	dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file);
-	return (-1);
-}
-
-
-/**
- * closefile - close a file.
- *
- * @f: the file to close.
- *
- * Return: 0 or 1.
- *
- */
-int closefile(int f)
+int closee(int f)
 {
 	if (!close(f))
 		return (0);
@@ -67,21 +13,54 @@ int closefile(int f)
 
 }
 
+/**
+ * readfile - read from  file and print an error message.
+ * @file: file name to read from.
+ * @f: the file  to read from.
+ * @buf: the buffer to write.
+ * @l: the number of bytes to read
+ *
+ * Return: The number of bytes read, or -1.
+ */
+ssize_t readfile(const char *file, int f, char *buf, size_t l)
+{
+	ssize_t byte = read(f, buf, l);
 
+	if (byte > -1)
+		return (byte);
+	dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file);
+	return (-1);
+}
 
 /**
- * main - copy a file content to another file.
+ * writefile - write to a file and print an error message  failure.
+ * @file: file name to write to.
+ * @f: the file  to write.
+ * @buf: the buffer to read from.
+ * @l: the number of bytes to write.
  *
- * @argc: the argument count.
- *
- * @argv: the argument values.
- *
- * Return: 1.
+ * Return: The number of bytes written, or -1.
  */
+ssize_t writefile(const char *file, int f, const char *buf, size_t l)
+{
+	ssize_t bytes = write(f, buf, l);
 
+	if (bytes > -1)
+		return (bytes);
+	dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file);
+	return (-1);
+}
+
+/**
+ * main - copy a file's contents to another file
+ * @argc: the argument count
+ * @argv: the argument values
+ *
+ * Return: Always 1
+ */
 int main(int argc, const char *argv[])
 {
-	int fin, fout;
+	int fin, fdout;
 	ssize_t bytestoread;
 	char buff[buffer];
 
@@ -100,25 +79,25 @@ int main(int argc, const char *argv[])
 	if (fout < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		closefile(fin);
+		closee(f_in);
 		exit(99);
 	}
-	while ((bytestoread = readfile(argv[1], fin, buff, buffer)))
+	while ((bytestoread = _read(argv[1], fd_in, buff, buffer)))
 	{
 		if (bytestoread < 0)
 		{
-			closefile(fin);
-			closefile(fout);
+			closee(fin);
+			closee(fout);
 			exit(98);
 		}
-		if (writefile(argv[2], fout, buff, bytestoread) < 0)
+		if (_write(argv[2], fd_out, buff, bytesotread) < 0)
 		{
-			closefile(fin);
-			closefile(fout);
+			closee(fin);
+			closee(fout);
 			exit(99);
 		}
 	}
-	if ((closefile(fin) | closefile(fout)) < 0)
+	if ((closee(f_in) | closee(ff_out)) < 0)
 		exit(100);
 	return (0);
 }
