@@ -1,3 +1,6 @@
+#include <stdio.h>
+
+
 /**
  * closee - close a file  and print an error message upon failure.
  * @f: the file descriptor to close
