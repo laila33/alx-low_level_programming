@@ -1,106 +1,97 @@
+
 #include <stdio.h>
 
-
 /**
- * closee - close a file  and print an error message upon failure.
- * @f: the file descriptor to close
+ * make_buffer - define 1024 bytes for  buffer.
+ * @ff: file buffer name  storing chars for.
  *
- * Return: 0 upon success, -1 upon failure
+ * Return: new buffer allocated.
  */
-int closee(int f)
+char *make_buffer(char *ff)
 {
-	if (!close(f))
-		return (0);
-	dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", f);
-	return (-1);
+	char *buff;
 
+	buff = malloc(sizeof(char) * 1024);
+
+	if (buff == NULL)
+	{
+		dprintf(STDERR_FILENO,
+			"Error: Can't write to %s\n", ff);
+		exit(99);
+	}
+
+	return (buff);
 }
 
 /**
- * readfile - read from  file and print an error message.
- * @file: file name to read from.
- * @f: the file  to read from.
- * @buf: the buffer to write.
- * @l: the number of bytes to read
- *
- * Return: The number of bytes read, or -1.
+ * closefile - Closes file .
+ * @fn: The file to be closed.
  */
-ssize_t readfile(const char *file, int f, char *buf, size_t l)
+void closefile(int fn)
 {
-	ssize_t byte = read(f, buf, l);
+	int i;
 
-	if (byte > -1)
-		return (byte);
-	dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file);
-	return (-1);
+	i = close(fn);
+
+	if (i == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fn);
+		exit(100);
+	}
 }
 
 /**
- * writefile - write to a file and print an error message  failure.
- * @file: file name to write to.
- * @f: the file  to write.
- * @buf: the buffer to read from.
- * @l: the number of bytes to write.
+ * main - Copies the contents of a file to another file.
+ * @argc: The number of arguments.
+ * @argv: arguments values.
  *
- * Return: The number of bytes written, or -1.
- */
-ssize_t writefile(const char *file, int f, const char *buf, size_t l)
-{
-	ssize_t bytes = write(f, buf, l);
-
-	if (bytes > -1)
-		return (bytes);
-	dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file);
-	return (-1);
-}
-
-/**
- * main - copy a file's contents to another file
- * @argc: the argument count
- * @argv: the argument values
+ * Return: 0 on success.
  *
- * Return: Always 1
+ * Description: If the argument count is incorrect - exit code 97.
+ *              If file_from does not exist or cannot be read - exit code 98.
+ *              If file_to cannot be created or written to - exit code 99.
+ *              If file_to or file_from cannot be closed - exit code 100.
  */
-int main(int argc, const char *argv[])
+int main(int argc, char *argv[])
 {
-	int fin, fout;
-	ssize_t bytestoread;
-	char buff[buffer];
+	int x, y, s, not;
+	char *get;
 
 	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-	fin = open(argv[1], O_RDONLY);
-	if (fin < 0)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-		exit(98);
-	}
-	fout = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0664);
-	if (fout < 0)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		closee(fin);
-		exit(99);
-	}
-	while ((bytestoread = _read(argv[1], f_in, buff, buffer)))
-	{
-		if (bytestoread < 0)
+
+	get = make_buffer(argv[2]);
+	x = open(argv[1], O_RDONLY);
+	s = read(x, get, 1024);
+	y = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	do {
+		if (x == -1 || s == -1)
 		{
-			closee(fin);
-			closee(fout);
+			dprintf(STDERR_FILENO,
+				"Error: Can't read from file %s\n", argv[1]);
+			free(get);
 			exit(98);
 		}
-		if (_write(argv[2], f_out, buff, bytestoread) < 0)
+
+		not = write(y, get, s);
+		if (y == -1 || not == -1)
 		{
-			closee(fin);
-			closee(fout);
+			dprintf(STDERR_FILENO,
+				"Error: Can't write to %s\n", argv[2]);
+			free(get);
 			exit(99);
 		}
-	}
-	if ((closee(f_in) | closee(f_out)) < 0)
-		exit(100);
+
+		s = read(x, get, 1024);
+		y = open(argv[2], O_WRONLY | O_APPEND);
+
+	} while (s > 0);
+
+	free(get);
+	closefile(x);
+	closefile(y);
 	return (0);
 }
