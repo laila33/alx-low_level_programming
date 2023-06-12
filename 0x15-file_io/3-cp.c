@@ -60,7 +60,7 @@ ssize_t writefile(const char *file, int f, const char *buf, size_t l)
  */
 int main(int argc, const char *argv[])
 {
-	int fin, fdout;
+	int fin, fout;
 	ssize_t bytestoread;
 	char buff[buffer];
 
@@ -79,10 +79,10 @@ int main(int argc, const char *argv[])
 	if (fout < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		closee(f_in);
+		closee(fin);
 		exit(99);
 	}
-	while ((bytestoread = _read(argv[1], fd_in, buff, buffer)))
+	while ((bytestoread = _read(argv[1], f_in, buff, buffer)))
 	{
 		if (bytestoread < 0)
 		{
@@ -90,14 +90,14 @@ int main(int argc, const char *argv[])
 			closee(fout);
 			exit(98);
 		}
-		if (_write(argv[2], fd_out, buff, bytesotread) < 0)
+		if (_write(argv[2], f_out, buff, bytestoread) < 0)
 		{
 			closee(fin);
 			closee(fout);
 			exit(99);
 		}
 	}
-	if ((closee(f_in) | closee(ff_out)) < 0)
+	if ((closee(f_in) | closee(f_out)) < 0)
 		exit(100);
 	return (0);
 }
